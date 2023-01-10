@@ -77,20 +77,16 @@ const newEmployee = async()=>{
 //const chooseOption = (type) => selectAll(type);
 const options = (type) => {
     switch (type) {
-        case 'VIEW ALL EMPLOYEES': {
-            selectAll('employees');
+        case 'Show all employees': {
+            employeeInfo();
             break;
         }
-        case 'VIEW ALL DEPARTMENTS': {
-            selectAll('departments');
+        case 'Show all departments': {
+            selectAll('department', true);
             break;
         }
-        case 'VIEW ALL ROLES': {
-            const data={
-                first_name:'John',
-                last_name:'Deer',
-            }
-            selectAll('roles');
+        case 'Show all roles': {
+            selectAll('role',true);
             break;
         }
         case 'Add Employee':{
