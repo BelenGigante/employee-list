@@ -1,11 +1,11 @@
-INSERT INTO department(name);
+INSERT INTO department(name)
 VALUES
-('Executive'),--1--
-('I.T'),--2--
-('Operations'),--3--
-('Helpdesk'),--4--
-('Web Development and Database'),--5--
-('App Software Development'),--6--
+('Executive'),
+('I.T'),
+('Operations'),
+('Helpdesk'),
+('Web Develop. and Database'),
+('App Software Development');
 INSERT INTO role(title,salary,department_id)
 VALUES
 ('Vice President COO',100000,1),
@@ -17,9 +17,9 @@ VALUES
 ('Director of Web Development',80000,5),
 ('Web Designer',60000,5),
 ('Advertising Manager',60000,5),
-('Application Software Development Manager',80000,6),
+('App Development Manager',80000,6),
 ('Sr. Programmer',70000,6),
-('Jr. Programmer',70000,6),
+('Jr. Programmer',70000,6);
 
 INSERT INTO employee(first_name,last_name,role_id,manager_id)
 VALUES
@@ -34,4 +34,4 @@ VALUES
 ('Stefanie','Stallworth',9,5),
 ('James','LeJeune',10,5),
 ('Thomas','Lawton',11,6),
-('Michael','Antonio',12,6),
+('Michael','Antonio',12,6);
