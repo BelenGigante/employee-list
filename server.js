@@ -7,23 +7,23 @@ const db = mysql.createConnection({
     user: 'root',
     database: 'employee_db',
 });
-const selectAll= async(table,display)=>{
-    const results = await db.promise().query('SELECT * FROM '+table );
-    if (display){
+const selectAll = async (table, display) => {
+    const results = await db.promise().query('SELECT * FROM ' + table);
+    if (display) {
         console.table(results[0]);
         return start();
     }
     return results;
 };
-const insert=(table,data)=>{
-    db.query('INSERT INTO ?? SET ?', [table,data],(err)=>{
-        if (!err) return console.error(err); 
+const insert = (table, data) => {
+    db.query('INSERT INTO ?? SET ?', [table, data], (err) => {
+        if (!err) return console.error(err);
         console.log('\nSuccesfully created\n');
         start();
     });
 };
 
-const getNameValue = (table, name,value) => {
+const getNameValue = (table, name, value) => {
     return db.promise().query('SELECT ?? AS name, ?? AS name FROM ??', [name, value, table]);
 };
 const employeeInfo = async () => {
@@ -44,13 +44,13 @@ const employeeInfo = async () => {
     console.table(employees);
 };
 
-const newEmployee = async()=>{
+const newEmployee = async () => {
     const [roles] = await getNameValue('role', 'title', 'id');
-    const [managers] = await getNameValue('employee','last_name','id');
+    const [managers] = await getNameValue('employee', 'last_name', 'id');
     prompt([
         {
-        name: 'first_name',
-        message: 'enter name',
+            name: 'first_name',
+            message: 'enter name',
         },
         {
             name: 'last_name',
@@ -66,15 +66,23 @@ const newEmployee = async()=>{
             type: 'list',
             name: 'manager_id',
             message: 'choose a manager :',
-            choices: managers ,
+            choices: managers,
+        },
+        {
+            name: 'addEmployee',
+            message: 'Add Employee',
+        },
+        {
+            name: 'quit',
+            message: 'Quit',
         }
     ])
-    .then((answers)=>{
+    .then((answers) => {
 
-        insert('employee',answers);
+            insert('employee', answers);
     });
 };
-//const chooseOption = (type) => selectAll(type);
+
 const options = (type) => {
     switch (type) {
         case 'Show all employees': {
@@ -86,14 +94,14 @@ const options = (type) => {
             break;
         }
         case 'Show all roles': {
-            selectAll('role',true);
+            selectAll('role', true);
             break;
         }
-        case 'Add Employee':{
+        case 'Add Employee': {
             newEmployee();
             break;
         }
-        case 'QUIT':{
+        case 'Quit': {
             break;
         }
     }
@@ -103,15 +111,15 @@ const start = () => {
         type: 'list',
         message: 'select an option',
         choices: [
-            {name:'VIEW ALL EMPLOYEES', value: 'employee'},
-            {name:'VIEW ALL DEPARTMENTS',value:'departments'},
-            {name:'VIEW ALL ROLES', value: "role"},
+            { name: 'Show all employees', value: 'employee' },
+            { name: 'Show all departments', value: 'departments' },
+            { name: 'Show all roles', value: "role" },
             //{'QUIT'},
         ],
         name: 'type',
     })
-        .then((answers) => {
-            options(answers.type);
-        });
+    .then((answers) => {
+        options(answers.type);
+    });
 };
 start();
