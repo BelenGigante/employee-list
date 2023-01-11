@@ -8,7 +8,7 @@ const db = mysql.createConnection({
     user: 'root',
     database: 'employee_db',
 });
-     const getNameValue=(table,name,value)=>{
+const getNameValue=(table,name,value)=>{
      return db.promise().query('SELECT ?? AS name, ?? AS value FROM ??',[name,value,table]);
 };
 const insert = (table,data) =>{

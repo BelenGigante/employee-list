@@ -18,27 +18,10 @@ const insert = (table, data) => {
 const getNameValue = (table, name, value) => {
     return db.promise().query('SELECT ?? AS name, ?? AS value FROM ??', [name, value, table]);
 };
-// const employeeInfo = async () => {
-//     const infoText = `
-//     SELECT
-//     employee.id,
-//     employee.first_name,
-//     employee.last_name,
-//     role.title,
-//     role.salary,
-//     CONCAT(employee.first_name, ' ', employee.last_name)
-//     AS manager
-//     FROM employee
-//     JOIN role
-//     ON employee.role_id =employee.id
-//     `
-//     const [employees] = await db.promise().query(infoText);
-//     console.table(employees);
-// };
 
 const newEmployee = async () => {
-    const [roles] = await getNameValue('role', 'title', 'id');
-    const [managers] = await getNameValue('employee', 'last_name', 'id');
+    const [roles] = await getNameValue('role','title','id');
+    const [managers] = await getNameValue('employee','last_name','id');
     prompt([
         {
             name: 'first_name',
