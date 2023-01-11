@@ -8,7 +8,7 @@ const db = mysql.createConnection({
     database: 'employee_db',
 });
 const insert = (table, data) => {
-    db.query('INSERT INTO ?? SET ?', [table, data], (err) =>{
+    db.query('INSERT INTO ?? SET ?', [table, data], (err) => {
         //if (!err) return console.error(err);
         console.log('\nSuccesfully created\n');
         start();
@@ -20,8 +20,8 @@ const getNameValue = (table, name, value) => {
 };
 
 const newEmployee = async () => {
-    const [roles] = await getNameValue('role','title','id');
-    const [managers] = await getNameValue('employee','last_name','id');
+    const [roles] = await getNameValue('role', 'title', 'id');
+    const [managers] = await getNameValue('employee', 'last_name', 'id');
     prompt([
         {
             name: 'first_name',
@@ -44,42 +44,70 @@ const newEmployee = async () => {
             choices: managers,
         },
     ])
-    .then((answers) => {
+        .then((answers) => {
             insert('employee', answers);
-    });
+        });
 };
 const newDepartment = async () => {
-    //const [departments] = await getNameValue('department','name','id');
-    //const [managers] = await getNameValue('employee','last_name','id');
     prompt([
-               {
+        {
             name: 'name',
             message: 'enter department name',
         },
     ])
-    .then((answers) => {
+        .then((answers) => {
             insert('department', answers);
-    });
+        });
+};
+const newRole = async () => {
+    const [department] = await getNameValue('department', 'name', 'id');
+    prompt([
+        {
+            name: 'first_name',
+            message: 'enter name',
+        },
+        {
+            name: 'last_name',
+            message: 'enter last name',
+        },
+        {
+            name: 'title',
+            message: 'enter role title',
+        },
+        {
+            name: 'salary',
+            message: 'enter role salary',
+        },
+        {
+            type: 'list',
+            name: 'name',
+            message: 'enter department name',
+            choices: department,
+        },
+    ])
+        .then((answers) => {
+            insert('role', answers);
+        });
 };
 
 const options = (type) => {
     switch (type) {
         case 'Show all employees': {
-            db.query('SELECT * FROM employee',(err, employees)=>{
+            db.query('SELECT * FROM employee', (err, employees) => {
                 console.table(employees);
             });
             start();
             break;
         }
         case 'Show all departments': {
-            db.query('SELECT * FROM department',(err, department)=>{
+            db.query('SELECT * FROM department', (err, department) => {
                 console.table(department);
             });
             start();
             break;
         }
         case 'Show all roles': {
-            db.query('SELECT * FROM role',(err, role)=>{
+            db.query('SELECT * FROM role', (err, role) => {
                 console.table(role);
             });
             start();
@@ -91,6 +119,10 @@ const options = (type) => {
         }
         case 'Add Department': {
             newDepartment();
+            break;
+        }
+        case 'Add a role': {
+            newRole();
             break;
         }
         case 'Quit': {
@@ -108,12 +140,13 @@ const start = () => {
             'Show all roles',
             'Add Employee',
             'Add Department',
+            'Add a role',
             'QUIT',
         ],
         name: 'type',
     })
-    .then((answers) => {
-        options(answers.type);
-    });
+        .then((answers) => {
+            options(answers.type);
+        });
 };
 start();
