@@ -1,11 +1,24 @@
 const inquirer = require('inquirer');
 const prompt = inquirer.createPromptModule();
 const mysql = require('mysql2');
+//const { isGeneratorFunction } = require('util/types');
+
 
 const db = mysql.createConnection({
     user: 'root',
     database: 'employee_db',
 });
+     const getAllEmployeeInfo=(table,name,value)=>{
+     return db.promise().query('SELECT ?? AS name, ?? AS value FROM ??',[name,value,table]);
+};
+const insert = (table,data) =>{
+    db.query('INSERT INTO employee', [table, data],(err) =>{
+        if (!err) return console.error(err);
+        console.log('\nSuccess\n');
+        start();
+    });
+};
+
 const chooseOption = (type) => {
     switch (type) {
         case 'VIEW ALL EMPLOYEES': {
@@ -29,11 +42,44 @@ const chooseOption = (type) => {
             });
             break;
         }
+        case 'ADD EMPLOYEE':{
+            newEmployee();
+            break;
+        }
         case 'QUIT':{
             break;
         }
     }
 }
+const newEmployee = async () =>{
+    const [roles] = await getAllEmployeeInfo('role','title','id');
+    const [managers] = await getAllEmployeeInfo('employee','first_name','last_name','id');
+prompt([
+    {
+        name: 'first_name',
+        message: 'enter name',
+    },
+    {
+        name: 'last_name',
+        message: 'enter last name',
+    },
+    {
+        type:'list',
+        name: 'role_id',
+        message: 'role :',
+        choices: roles,
+    },
+    {
+        type:'list',
+        name: 'manager_id',
+        message: 'choose a manager :',
+        choices: managers,
+    },
+])
+.then((answers) =>{
+    insert('employee',answers);
+});
+};
 const start = () => {
     prompt({
         type: 'list',
@@ -42,6 +88,7 @@ const start = () => {
             'VIEW ALL EMPLOYEES',
             'VIEW ALL DEPARTMENTS',
             'VIEW ALL ROLES',
+            'ADD EMPLOYEE',
             'QUIT',
         ],
         name: 'type',

@@ -34,11 +34,11 @@ const employeeInfo = async () => {
     employee.last_name,
     role.title,
     role.salary,
-    CONCAT(manager.first_name, ' ', manager.last_name)
+    CONCAT(employee.first_name, ' ', employee.last_name)
     AS manager
     FROM employee
     JOIN role
-    ON employee.role_id =manager.id
+    ON employee.role_id =employee.id
     `
     const [employees] = await db.promise().query(infoText);
     console.table(employees);
@@ -111,10 +111,10 @@ const start = () => {
         type: 'list',
         message: 'select an option',
         choices: [
-            { name: 'Show all employees', value: 'employee' },
-            { name: 'Show all departments', value: 'departments' },
-            { name: 'Show all roles', value: "role" },
-            //{'QUIT'},
+            'Show all employees',
+            'Show all departments',
+            'Show all roles',
+            'QUIT',
         ],
         name: 'type',
     })
