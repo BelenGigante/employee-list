@@ -63,14 +63,6 @@ const newRole = async () => {
     const [department] = await getNameValue('department', 'name', 'id');
     prompt([
         {
-            name: 'first_name',
-            message: 'enter employee name',
-        },
-        {
-            name: 'last_name',
-            message: 'enter last name',
-        },
-        {
             name: 'title',
             message: 'enter role title',
         },
@@ -80,7 +72,7 @@ const newRole = async () => {
         },
         {
             type: 'list',
-            name: 'name',
+            name: 'department_id',
             message: 'enter department name',
             choices: department,
         },
