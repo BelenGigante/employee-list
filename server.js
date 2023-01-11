@@ -1,48 +1,40 @@
 const inquirer = require('inquirer');
 const prompt = inquirer.createPromptModule();
 const mysql = require('mysql2');
-require('console.table');
+//require('console.table');
 
 const db = mysql.createConnection({
     user: 'root',
     database: 'employee_db',
 });
-const selectAll = async (table, display) => {
-    const results = await db.promise().query('SELECT * FROM ' + table);
-    if (display) {
-        console.table(results[0]);
-        return start();
-    }
-    return results;
-};
 const insert = (table, data) => {
-    db.query('INSERT INTO ?? SET ?', [table, data], (err) => {
-        if (!err) return console.error(err);
+    db.query('INSERT INTO ?? SET ?', [table, data], (err) =>{
+        //if (!err) return console.error(err);
         console.log('\nSuccesfully created\n');
         start();
     });
 };
 
 const getNameValue = (table, name, value) => {
-    return db.promise().query('SELECT ?? AS name, ?? AS name FROM ??', [name, value, table]);
+    return db.promise().query('SELECT ?? AS name, ?? AS value FROM ??', [name, value, table]);
 };
-const employeeInfo = async () => {
-    const infoText = `
-    SELECT
-    employee.id,
-    employee.first_name,
-    employee.last_name,
-    role.title,
-    role.salary,
-    CONCAT(employee.first_name, ' ', employee.last_name)
-    AS manager
-    FROM employee
-    JOIN role
-    ON employee.role_id =employee.id
-    `
-    const [employees] = await db.promise().query(infoText);
-    console.table(employees);
-};
+// const employeeInfo = async () => {
+//     const infoText = `
+//     SELECT
+//     employee.id,
+//     employee.first_name,
+//     employee.last_name,
+//     role.title,
+//     role.salary,
+//     CONCAT(employee.first_name, ' ', employee.last_name)
+//     AS manager
+//     FROM employee
+//     JOIN role
+//     ON employee.role_id =employee.id
+//     `
+//     const [employees] = await db.promise().query(infoText);
+//     console.table(employees);
+// };
 
 const newEmployee = async () => {
     const [roles] = await getNameValue('role', 'title', 'id');
@@ -68,17 +60,8 @@ const newEmployee = async () => {
             message: 'choose a manager :',
             choices: managers,
         },
-        {
-            name: 'addEmployee',
-            message: 'Add Employee',
-        },
-        {
-            name: 'quit',
-            message: 'Quit',
-        }
     ])
     .then((answers) => {
-
             insert('employee', answers);
     });
 };
@@ -86,15 +69,24 @@ const newEmployee = async () => {
 const options = (type) => {
     switch (type) {
         case 'Show all employees': {
-            employeeInfo();
+            db.query('SELECT * FROM employee',(err, employees)=>{
+                console.table(employees);
+            });
+            start();
             break;
         }
         case 'Show all departments': {
-            selectAll('department', true);
+            db.query('SELECT * FROM department',(err, department)=>{
+                console.table(department);
+            });
+            start();
             break;
         }
         case 'Show all roles': {
-            selectAll('role', true);
+            db.query('SELECT * FROM role',(err, role)=>{
+                console.table(role);
+            });
+            start();
             break;
         }
         case 'Add Employee': {
@@ -114,6 +106,7 @@ const start = () => {
             'Show all employees',
             'Show all departments',
             'Show all roles',
+            'Add Employee',
             'QUIT',
         ],
         name: 'type',

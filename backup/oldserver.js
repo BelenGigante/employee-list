@@ -8,7 +8,7 @@ const db = mysql.createConnection({
     user: 'root',
     database: 'employee_db',
 });
-     const getAllEmployeeInfo=(table,name,value)=>{
+     const getNameValue=(table,name,value)=>{
      return db.promise().query('SELECT ?? AS name, ?? AS value FROM ??',[name,value,table]);
 };
 const insert = (table,data) =>{
@@ -19,7 +19,7 @@ const insert = (table,data) =>{
     });
 };
 
-const chooseOption = (type) => {
+const options = (type) => {
     switch (type) {
         case 'VIEW ALL EMPLOYEES': {
             db.query('SELECT * FROM employee', (err, employees) => {
@@ -52,8 +52,8 @@ const chooseOption = (type) => {
     }
 }
 const newEmployee = async () =>{
-    const [roles] = await getAllEmployeeInfo('role','title','id');
-    const [managers] = await getAllEmployeeInfo('employee','first_name','last_name','id');
+    const [roles] = await getNameValue('role','title','id');
+    const [managers] = await getNameValue('employee','last_name','id');
 prompt([
     {
         name: 'first_name',
@@ -94,7 +94,7 @@ const start = () => {
         name: 'type',
     })
         .then((answers) => {
-            chooseOption(answers.type);
+            options(answers.type);
         });
 };
 start();
