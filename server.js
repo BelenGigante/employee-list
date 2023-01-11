@@ -1,7 +1,7 @@
 const inquirer = require('inquirer');
 const prompt = inquirer.createPromptModule();
 const mysql = require('mysql2');
-//require('console.table');
+require('console.table');
 
 const db = mysql.createConnection({
     user: 'root',
@@ -64,7 +64,7 @@ const newRole = async () => {
     prompt([
         {
             name: 'first_name',
-            message: 'enter name',
+            message: 'enter employee name',
         },
         {
             name: 'last_name',
@@ -85,9 +85,9 @@ const newRole = async () => {
             choices: department,
         },
     ])
-        .then((answers) => {
-            insert('role', answers);
-        });
+    .then((answers) => {
+        insert('role', answers);
+    });
 };
 
 const options = (type) => {
