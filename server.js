@@ -141,7 +141,7 @@ const start = () => {
             'Add Employee',
             'Add Department',
             'Add a role',
-            'QUIT',
+            'Quit',
         ],
         name: 'type',
     })
