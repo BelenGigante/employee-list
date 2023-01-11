@@ -48,6 +48,19 @@ const newEmployee = async () => {
             insert('employee', answers);
     });
 };
+const newDepartment = async () => {
+    //const [departments] = await getNameValue('department','name','id');
+    //const [managers] = await getNameValue('employee','last_name','id');
+    prompt([
+               {
+            name: 'name',
+            message: 'enter department name',
+        },
+    ])
+    .then((answers) => {
+            insert('department', answers);
+    });
+};
 
 const options = (type) => {
     switch (type) {
@@ -76,6 +89,10 @@ const options = (type) => {
             newEmployee();
             break;
         }
+        case 'Add Department': {
+            newDepartment();
+            break;
+        }
         case 'Quit': {
             break;
         }
@@ -90,6 +107,7 @@ const start = () => {
             'Show all departments',
             'Show all roles',
             'Add Employee',
+            'Add Department',
             'QUIT',
         ],
         name: 'type',
